@@ -23,6 +23,14 @@ This file persists context across agent sessions. Update it as you work.
   Run them one at a time; phpstan needs a /tmp config including phpstan.neon.dist with
   `parameters.parallel.maximumNumberOfProcesses: 2`; psalm with `--threads=2`.
 
+## phpcs fix for Message.php:638 (sprintf unpacking)
+- Tried: call_user_func_array (new phpcs fallback-name + psalm MixedReturnStatement), vsprintf+array_slice (psalm Mixed* errors AND
+  phpstan-baseline.neon count mismatches: "Cannot cast mixed to string" 2->3, "Right side of && is always true" unmatched).
+- What worked: keep code as is, add `// phpcs:ignore SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking.UnpackingUsed -- <reason>`
+  above `return sprintf(...$params);`. Baselines (phpstan/psalm) encode Message.php quirks, so don't restructure that method.
+- The "1 deprecated sniff" (UnionTypeHintFormat) warning comes from vendor/phpmyadmin/coding-standard, not editable in repo.
+- Remaining phpstan: ~275x Util::backquote() Stringable errors + 'unknown interface Stringable' + PHPUnit attrs = dependency drift (no tracked composer.lock).
+
 ## Pre-existing environment noise (NOT caused by this change; out of scope)
 - `composer phpcs`: 1 error in libraries/classes/Message.php:638 (sprintf argument unpacking) — newer Slevomat resolved since QA_5_2 has no composer.lock. Confirmed present with changes stashed.
 - PHPStan (1130 errors) / Psalm (914 errors): almost all "Attribute class PHPUnit\Framework\Attributes\* does not exist" (PHPUnit 9 resolved) + a few dep deprecations. No errors in changed library files; no unmatched baseline entries.

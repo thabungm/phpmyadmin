@@ -635,6 +635,7 @@ class Message implements Stringable
             $params = $params[1];
         }
 
+        // phpcs:ignore SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking.UnpackingUsed -- params are variadic by design
         return sprintf(...$params);
     }
 
