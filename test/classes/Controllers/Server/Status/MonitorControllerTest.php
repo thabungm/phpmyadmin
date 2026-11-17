@@ -74,7 +74,7 @@ class MonitorControllerTest extends AbstractTestCase
         self::assertStringContainsString('<option>Connections</option>', $html);
 
         self::assertStringContainsString('<form id="js_data" class="hide">', $html);
-        self::assertStringContainsString('<input type="hidden" name="server_time"', $html);
+        self::assertMatchesRegularExpressionCompat('/<input type="hidden" name="server_time" value="\d{13,}">/', $html);
         //validate 2: inputs
         self::assertStringContainsString('<input type="hidden" name="is_superuser"', $html);
         self::assertStringContainsString('<input type="hidden" name="server_db_isLocal"', $html);

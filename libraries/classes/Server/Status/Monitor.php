@@ -14,6 +14,7 @@ use PhpMyAdmin\Util;
 
 use function array_sum;
 use function count;
+use function floor;
 use function implode;
 use function is_numeric;
 use function json_decode;
@@ -91,7 +92,7 @@ class Monitor
         // ...and now assign them
         $ret = $this->getJsonForChartingDataSet($ret, $statusVarValues, $serverVarValues);
 
-        $ret['x'] = (int) (microtime(true) * 1000);
+        $ret['x'] = floor(microtime(true) * 1000);
 
         return $ret;
     }
