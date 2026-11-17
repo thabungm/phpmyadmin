@@ -70,3 +70,10 @@ This contribution was prepared with AI assistance and reviewed by me.
 
 ## Next Steps
 - None. HubLaunch to squash (drop plan commit) and open PR against QA_5_2 with the body above.
+
+## Auto-fix attempt 2 (re-check of phpcs/phpstan/psalm output)
+- phpcs: 0 errors; only the "1 deprecated sniff (UnionTypeHintFormat)" notice, which comes from vendor/phpmyadmin/coding-standard ^3.1 (not repo config) — cannot be fixed in-repo.
+- phpstan (verified via /tmp config, 2 procs): the only hits in touched files are `Message implements unknown interface Stringable` (pre-existing, dependency drift) and
+  `PHPUnit\Framework\Attributes\CoversClass does not exist` (PHPUnit 9.6.39 installed; the repo's sibling tests use the same attribute, so MonitorTest matches convention).
+- Do NOT "fix" these by mass-editing ~900 files or the baselines; composer.lock is gitignored, so the environment resolves newer/older deps than CI.
+- eslint and stylelint pass cleanly.
