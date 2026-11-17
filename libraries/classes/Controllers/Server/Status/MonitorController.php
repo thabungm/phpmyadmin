@@ -11,6 +11,7 @@ use PhpMyAdmin\Server\SysInfo\SysInfo;
 use PhpMyAdmin\Template;
 use PhpMyAdmin\Url;
 
+use function floor;
 use function is_numeric;
 use function microtime;
 use function sort;
@@ -54,7 +55,7 @@ class MonitorController extends AbstractController
         ]);
 
         $form = [
-            'server_time' => (int) (microtime(true) * 1000),
+            'server_time' => floor(microtime(true) * 1000),
             'server_os' => SysInfo::getOs(),
             'is_superuser' => $this->dbi->isSuperUser(),
             'server_db_isLocal' => $this->data->dbIsLocal,
